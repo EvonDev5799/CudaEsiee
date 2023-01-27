@@ -5,6 +5,18 @@ Windows API Create Write files
 Bitmap use
 chrono use
 
+TP3
+cpu 0.0026 ms
+gpu multibloc 0.3904 ms
+gpu multithread 0.2532 ms
+
+TP4
+cpu 0.0020 ms
+gpu 0.0266 ms
+
+
+
+
 TP5 - source1 - 1 000 : 0.046800ms
 TP5 - source2 - 1 000 : 0.037700ms
 

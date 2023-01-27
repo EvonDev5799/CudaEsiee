@@ -1,4 +1,7 @@
+.vscode/
 *.bmp
 *.exe
 *.lib
 *.exp
+*.obj
+setup.bat
