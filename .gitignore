@@ -1,1 +1,4 @@
 *.bmp
+*.exe
+*.lib
+*.exp
