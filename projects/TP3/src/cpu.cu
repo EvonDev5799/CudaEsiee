@@ -5,16 +5,16 @@
 
 int main(void)
 {
-	float input[SIZE];
-	float output[SIZE];	
-	setupArray(input, SIZE, MAX);
+	float input[DIM];
+	float output[DIM];	
+	setupArray(input, DIM, MAX);
 	
 	auto start = std::chrono::high_resolution_clock::now();
-	for (int i = 0; i < SIZE; i++)
+	for (int i = 0; i < DIM; i++)
 		output[i]= sqrtf(input[i]);
 	auto end = std::chrono::high_resolution_clock::now();
 	#ifdef DEBUG
-	displayResults(input, output, SIZE);
+	displayResults(input, output, DIM);
 	#endif
 	double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
 	time_taken *= 1e-6;

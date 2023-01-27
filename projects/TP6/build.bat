@@ -1,3 +1,3 @@
-call helpers/setup.bat
-call helpers/main.bat
+call ../setup.bat
+call build_utils/main.bat
 pause

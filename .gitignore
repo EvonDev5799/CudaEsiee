@@ -5,3 +5,4 @@
 *.exp
 *.obj
 setup.bat
+!projects/TP6/bmp/source.bmp

@@ -9,24 +9,24 @@ __global__ void kernelsqrt(float* dev_input, float* dev_output){
 
 int main(void)
 {
-	float input[SIZE];
-	float output[SIZE];
-	setupArray(input, SIZE, MAX);
+	float input[DIM];
+	float output[DIM];
+	setupArray(input, DIM, MAX);
 
 	float *dev_input, *dev_output;
-	cudaMalloc(&dev_input, sizeof(float) * SIZE);
-	cudaMalloc(&dev_output, sizeof(float) * SIZE);
-	cudaMemcpy(dev_input, input, sizeof(float) * SIZE, cudaMemcpyHostToDevice);	
+	cudaMalloc(&dev_input, sizeof(float) * DIM);
+	cudaMalloc(&dev_output, sizeof(float) * DIM);
+	cudaMemcpy(dev_input, input, sizeof(float) * DIM, cudaMemcpyHostToDevice);	
 
 	auto start = std::chrono::high_resolution_clock::now();
-	kernelsqrt<<<1,SIZE>>>(dev_input, dev_output);
+	kernelsqrt<<<1,DIM>>>(dev_input, dev_output);
 	cudaDeviceSynchronize();
 	auto end = std::chrono::high_resolution_clock::now();
 
-	cudaMemcpy(output, dev_output, sizeof(float) * SIZE, cudaMemcpyDeviceToHost);
+	cudaMemcpy(output, dev_output, sizeof(float) * DIM, cudaMemcpyDeviceToHost);
 	cudaDeviceSynchronize();
 	#ifdef DEBUG
-	displayResults(input, output, SIZE);
+	displayResults(input, output, DIM);
 	#endif
 	double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
 	time_taken *= 1e-6;
