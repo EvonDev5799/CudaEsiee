@@ -31,8 +31,13 @@ __global__ void kernel(rgb_data* dev_input, rgb_data* dev_output, int* dev_gx, i
 	dev_output[getOffsetD(blockIdx.x + dim_g/2, blockIdx.y + dim_g/2, gridDim.x + 2*(dim_g/2))].b = value;
 }
 
-int main(void)
+int main(int argc, char* argv[])
 {
+	if (argc != 3) {
+		printf("how to call : %s input_file_path output_file_path\n", argv[0]);
+		return;
+	}
+
 	int height, width;
 	rgb_data *input, *output;
 	rgb_data *dev_input, *dev_output;
@@ -45,7 +50,7 @@ int main(void)
 		{-1, 0, 1},
 	};
 
-	open_bitmap("bmp/source.bmp", &input, &width, &height);
+	open_bitmap(argv[1], &input, &width, &height);
 	int buffer_size = width*height*sizeof(rgb_data);
 
 	cudaMalloc(&dev_gx, sizeof(gx));
@@ -69,7 +74,7 @@ int main(void)
 
 	output = (rgb_data*) malloc(buffer_size);
 	cudaMemcpy(output, dev_output, buffer_size, cudaMemcpyDeviceToHost);
-	save_bitmap("bmp/gpu.bmp", width, height, 96, output);
+	save_bitmap(argv[2], width, height, 96, output);
 
 	free(input);
 	free(output);

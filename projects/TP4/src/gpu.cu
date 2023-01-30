@@ -34,4 +34,8 @@ int main(void)
 	double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
 	time_taken *= 1e-6;
 	printf("Time to compute on gpu: %.4lf ms\n", time_taken);
+
+	cudaFree(dev_input1);
+	cudaFree(dev_input2);
+	cudaFree(dev_output);
 }

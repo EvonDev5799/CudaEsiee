@@ -47,7 +47,13 @@ __global__ void kernel( unsigned char *ptr, int height, int width ) {
 	}
 }
 
-int main( void ) {	
+int main( int argc, char* argv[] ) {	
+	if (argc != 2) {
+		printf("how to call : %s output_file_path\n", argv[0]);
+		return;
+	}
+
+
 	double time_taken;
 	std::chrono::steady_clock::time_point start, end;
 
@@ -97,7 +103,7 @@ int main( void ) {
 	printf("Time to transform data: %.4lf ms\n", time_taken);
 	
 	start = std::chrono::high_resolution_clock::now();
-	save_bitmap("julia2.bmp", DIM, DIM, 96, pixels);
+	save_bitmap(argv[1], DIM, DIM, 96, pixels);
 	free(pixels);
 	end = std::chrono::high_resolution_clock::now();
 	time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();

@@ -85,7 +85,7 @@ void logPixels(rgb_data* data, int width, int height)
 }	
 
 // modified from https://ricardolovelace.com/blog/creating-bitmap-images-with-c-on-windows/ 
-void save_bitmap(const char* file_name, int width, int height, int dpi, rgb_data *pixel_data) {
+bool save_bitmap(const char* bmpname, int width, int height, int dpi, rgb_data *pixel_data) {
 	int paddingSize = ( 4 - (width * sizeof(rgb_data)) ) % 4;
 	int lineSize = width * sizeof(rgb_data) + paddingSize;
 	int buffsize = lineSize*height;	
@@ -115,7 +115,12 @@ void save_bitmap(const char* file_name, int width, int height, int dpi, rgb_data
 	bi.biClrUsed		= 0;
 	bi.biClrImportant	= 0;
 
-	hFile = CreateFileA(file_name, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	hFile = CreateFileA(bmpname, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	if (hFile == INVALID_HANDLE_VALUE) 
+    {
+        printf("Terminal failure: Unable to open file \"%s\" for write.\n", bmpname);
+        return false;
+    }
 	WriteFile(hFile, &bf, sizeof(bf), NULL, NULL);
 	WriteFile(hFile, &bi, sizeof(bi), NULL, NULL);
 	
@@ -137,15 +142,23 @@ void save_bitmap(const char* file_name, int width, int height, int dpi, rgb_data
 	WriteFile(hFile, buff, buffsize, NULL, NULL);
 	free(buff);
 	CloseHandle(hFile);
+	return true;
 }
 
-void open_bitmap(const char* bmpname, rgb_data** ptrOutput, int* ptrWidth, int * ptrHeight)
+bool open_bitmap(const char* bmpname, rgb_data** ptrOutput, int* ptrWidth, int * ptrHeight)
 {
 	HANDLE hFile;
 	BYTE* buff;
 	BITMAPFILEHEADER bf;
 	BITMAPINFOHEADER bi;
 	hFile = CreateFileA(bmpname, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (hFile == INVALID_HANDLE_VALUE) 
+    {
+        printf("Terminal failure: Unable to open file \"%s\" for write.\n", bmpname);
+        return false;
+    }
+
 	ReadFile(hFile, &bf, sizeof(bf), NULL, NULL);
 	ReadFile(hFile, &bi, sizeof(bi), NULL, NULL);
 
@@ -178,6 +191,7 @@ void open_bitmap(const char* bmpname, rgb_data** ptrOutput, int* ptrWidth, int *
 	*ptrWidth = bi.biWidth;
 	*ptrHeight = bi.biHeight;
 	CloseHandle(hFile);
+	return true;
 }
 
 int getOffset(int x, int y, int width)

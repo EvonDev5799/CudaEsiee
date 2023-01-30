@@ -19,6 +19,6 @@ rgb_data white();
 unsigned char greyscale(rgb_data pixel);
 char greyToChar(unsigned char c);
 void logPixels(rgb_data* data, int width, int height);
-void save_bitmap(const char* file_name, int width, int height, int dpi, rgb_data *pixel_data);
-void open_bitmap(const char* bmpname, rgb_data** ptrOutput, int* ptrWidth, int * ptrHeight);
+bool save_bitmap(const char* file_name, int width, int height, int dpi, rgb_data *pixel_data);
+bool open_bitmap(const char* bmpname, rgb_data** ptrOutput, int* ptrWidth, int * ptrHeight);
 int getOffset(int x, int y, int width);
